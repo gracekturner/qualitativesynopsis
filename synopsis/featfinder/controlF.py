@@ -5,7 +5,7 @@ import pandas
 from datetime import datetime
 import sys
 sys.path.append('../')
-from textfunctions.feature_finder import  scrub
+
 ##controlF is the current algorithm ("control F on steroids")
 ##it contains anything that pulls to and from models.Data, as well
 ##as the topic assignment algorithms etc.
@@ -14,6 +14,8 @@ from textfunctions.feature_finder import  scrub
 ##DATA[DATANAME] = the name of the column
 ##DATA[TOPIC] = a dictionary of a pandas dataframe with: (topic, id, feature)
 ##DATA[FEATURE] = a dictionary of a pandas dataframe with: (topic, feature)
+def scrub(text, punc_list = PUNCTUATION_LIST_AND_STOP_WORDS):
+    return remove(text.lower(), punc_list)
 
 
 # return_error(function_name, args) sends the arguments along to
