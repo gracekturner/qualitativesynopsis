@@ -1,0 +1,6 @@
+gunicorn==19.7.1
+django == 2.0.7
+django_heroku
+pandas
+datetime
+xlsxwriter
