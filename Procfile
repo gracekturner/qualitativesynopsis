@@ -1,1 +1,1 @@
-web: gunicorn synopsis.wsgi
+web: gunicorn synopsis.synopsis.wsgi
