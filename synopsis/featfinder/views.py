@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect, reverse
 import featfinder.forms as forms
 import sys
 sys.path.append('../')
-import openpyxl
 from globalconstants import *
 import pandas
 from . import models
