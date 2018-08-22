@@ -1,0 +1,143 @@
+{% extends 'featfinder/base.html' %}
+
+{%block title%}: {{data_name}}{%endblock%}
+
+{%block exit%}
+
+{%endblock%}
+
+{%block content%}
+<!--assigning entry section-->
+<div class = "entry middle-right">
+  {%if error_message%}<p><strong>{{ error_message }}</strong></p> {%endif%}
+<table class = "entry-table ">
+  <tr class = "entry-cell ">
+    <td class = " col-1" style = "font-weight: bold; padding-top: 9px;">Entries</td>
+    <td class = " col-2" style = "font-weight: bold;  padding-top: 9px;">Topics</td>
+  </tr>
+</table>
+
+<div class = "entry-scroll">
+<table class = "entry-table scrolling">
+
+<tbody>
+  {%for each in results%}
+
+
+  <td class = "entry-cell col-1">
+
+    {%if each.data != "" %}
+    <div id = "text{{ each.id }}"> {{each.data}}</div>
+    {%endif%}
+  </td>
+    <td class = "entry-cell col-2">
+
+      <!-- for t in topics-->
+      {%for t in each.topic%}
+        {%if t != ""%}
+
+
+      <div class = "inner">
+
+      <button type="submit" class = "topic">
+          <span> {{t}}</span>
+      </button>
+
+    </div>
+    {%endif%}
+      {%endfor%}
+
+
+  </td>
+</tr>
+
+  {%endfor%}
+</tbody>
+</table>
+</div>
+</div>
+<!-- topic overview section -->
+<div class = "entry middle-left">
+  <div class = "keep-bottom topic-header">
+    Topic Overview
+  </div>
+  <div style = "text-align: center;">
+  <form enctype="multipart/form-data" action="" method="post">
+  {% csrf_token %}
+  <input type = "hidden" value = "AddTopic" name = "FormName">
+  <input type = "text" onkeydown = "if (event.keyCode == 13) {this.form.submit(); return false;}" name = "AddTopic_Topic" placeholder="Add a new topic...">
+  </form>
+</div>
+
+  <div class = "keep-bottom topic-header">
+    Topics, Search Terms, and Frequency
+  </div>
+
+  <div class = "entry-scroll">
+  <table class = "topic-table">
+    <!-- each topic's overview follows this pattern -->
+
+
+    {%for each in topic_overview%}
+    <tr>
+      <td class = " col-1">
+        <div class = "inner">
+        <form enctype="multipart/form-data" action="" method="post">
+          {% csrf_token %}
+          <button type="submit">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+          <input type = "hidden" name = "FormName" value = "DeleteTopic">
+          <input type = "hidden" name = "DeleteTopic_Topic" value = "{{each.topic}}">
+        </form>
+      </div>
+        {{each.topic}}
+
+      </td>
+      <td class = "col-2">{{each.frequency}}</td>
+    </tr>
+    <tr class = "keep-bottom">
+      <td colspan="2" class = " left-align inner">
+        <form enctype="multipart/form-data" action="" method="post">
+        {% csrf_token %}
+        <input type = "hidden" value = "AddFeature" name = "FormName">
+        <input type = "hidden" value = "{{each.topic}}" name = "AddFeature_Topic">
+        <input type = "text" onkeydown = "if (event.keyCode == 13) {this.form.submit(); return false;}" name = "AddFeature_Feature" placeholder = "Add a search term...">
+        </form>
+        {%for t in each.feature%}
+        {%if t != ""%}
+        <div class = "inner">
+        <form enctype="multipart/form-data" action="" method="post">
+          {% csrf_token %}
+          <button type="submit">
+            <span class="glyphicon glyphicon-remove" style = "font-size: 10px;"></span>
+            <span> {{t}}</span>
+          </button>
+          <input type = "hidden" name = "FormName" value = "DeleteFeatureTopic">
+          <input type = "hidden" name = "DeleteFeatureTopic_Topic" value = "{{each.topic}}">
+          <input type = "hidden" name = "DeleteFeatureTopic_Feature" value = "{{t}}">
+        </form>
+      </div>
+
+        {%endif%}
+        {%endfor%}
+
+      </td>
+    </tr>
+    {%endfor%}
+    <tr class = "keep-bottom topic-header">
+      <td colspan = "2">... </td>
+
+    </tr>
+    <tr class = "keep-bottom topic-header">
+      <td colspan = "2">... </td>
+
+    </tr>
+  </table>
+</div>
+</div>
+
+
+
+
+{%endblock%}

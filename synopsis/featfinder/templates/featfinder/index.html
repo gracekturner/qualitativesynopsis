@@ -1,0 +1,21 @@
+{% extends 'featfinder/base.html' %}
+{% block content %}
+<div>
+
+  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+  <form enctype="multipart/form-data" action="" method="post">
+  {% csrf_token %}
+  <p>Upload Data File</p>
+  <input type = "file" name = "UploadData_File"> <br>
+  <p>Specify Sheet Name </p>
+  <input type = "text" name = "UploadData_Sheet_Name"> <br>
+  <p>Specify Column Name</p>
+  <input type = "text" name = "UploadData_Column_Name"> <br>
+  <input type = "hidden" name = "FormName" value = "UploadData">
+
+  <input type="submit" value="Submit" />
+  </form>
+</div>
+
+{% endblock %}

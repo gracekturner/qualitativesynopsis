@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="../js/bootstrap-tagsinput.js"></script>
+<style>
+/*currently unused but rather than waste it I will leave it*/
+#popup {
+
+  visibility: hidden;
+  position: fixed;
+  left: 40%;
+  top: 100px;
+  background-color: white;
+  border: 1px solid;
+  border-color: #99ccff;
+  width: 30%;
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.topic-box {
+  width: 75px;
+  border: 1px solid;
+  border-color: #99ccff;
+  border-radius: 3px;
+  height: 300px;
+  margin-bottom: 100px;
+
+}
+
+.machine {
+  border-color: #99ccff;
+  background-color: #e6f2ff;
+  border-style: dashed;
+}
+/*used for the light blue menu bar at the top of the screen*/
+.top-bar {
+  position: fixed;
+  top: 0px;
+  height: 75px;
+  width: 100%;
+  border-bottom: 1px solid;
+  border-color: #99ccff;
+  background-color: #e6f2ff;
+   opacity: 1.0;
+}
+
+/*used to do the scrolling tables (both topic overview and entry)*/
+.entry {
+    position: relative;
+    margin-bottom: 0px;
+}
+.entry-scroll {
+  height:425px;
+  overflow:auto;
+  border-top: hidden;
+}
+/*I use these on the buttons (for both topic and entry tables)*/
+.topic {
+  margin: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+
+}
+
+.inner {
+  display: inline-block;
+}
+/*used to position in a 1:2 ratio anything under the topbar*/
+.middle-right {
+  position: fixed;
+  top: 75px;
+  left: 30%;
+  width: 100%;
+}
+.middle-left {
+  position: fixed;
+  top: 85px;
+  left: 3%;
+}
+
+/*used on the entry-topic section only*/
+.entry-table {
+  width: 70%;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+  border: 1px solid;
+  border-color: #99ccff;
+
+}
+.entry-cell {
+  border: 0.5px solid;
+  border-color: #99ccff;
+}
+.col-1 {
+  width: 70%;
+}
+.col-2 {
+  width: 30%;
+}
+.scrolling {
+ border-top: hidden;
+
+}
+/*used on the topic overview section only*/
+.topic-table {
+
+  height:100px;
+  width: 75px;
+  overflow:scroll;
+  text-align: left;
+  margin-bottom: 40px;
+}
+
+.topic-header {
+  text-align: center;
+  font-weight: bold;
+  margin: 10px;
+
+}
+
+
+.keep-bottom {
+  border:0;
+  border-bottom:1px solid #99ccff;
+}
+
+/*customer input*/
+.textarea {
+  width: 300px;
+  height: 65px;
+}
+</style>
+</head>
+<body>
+
+<div class = "top-bar">
+<h2 style = "position: fixed;left: 5%; top: 0px;">Synopsis{%block title%} {%endblock%}</h2>
+
+<div style = "position: fixed;left: 1%;top: 25px;"> {%block exit%} {%endblock%}</div>
+
+<!--Customer Feedback-->
+<div style = "position:fixed; left: 70%; top: 5px;">
+  <form enctype="multipart/form-data" action="" method="post">
+  {% csrf_token %}
+  <input type = "hidden" value = "CustomerFeedback" name = "FormName">
+  <textarea class = "textarea" onkeydown = "if (event.keyCode == 13) {this.form.submit(); return false;}" name = "CustomerFeedback_Text" placeholder="Tell us what you think! Write your problems and joys here..."></textarea>
+  </form>
+</div>
+</div>
+<div style = "position: relative;top: 75px;">
+{% block content %}
+{% endblock %}
+</div>
+
+<script>
+/*Stuff that is currently unused but if I create a popup I will use it.*/
+/*on ready so that on enter you apply a show_popup and fill it with relevant info*/
+/*
+
+ $(document).ready(function() {
+   $(".tags").on('keyup', function (e) {
+       if (e.keyCode == 13) {
+           var id = e.target.id;
+           var val = e.target.value;
+           showPopup(id, val);
+       }
+     });
+     $("#assign-topic-popup").click(function () {
+          var x = document.getElementById("popup");
+          var y = document.getElementById("highlightid").value;
+
+          reset stuff
+          document.getElementById("popuptopic").value = "";
+          document.getElementById("highlightid").value = "";
+          document.getElementById("highlightval").value = "";
+          document.getElementById("popuptext").innerHTML = "";
+          document.getElementById(y).value = "";
+
+          x.style.visibility = "hidden";
+
+     });
+  });
+*/
+
+/*Hiding and showing a popup*/
+/*
+function showPopup(id, val) {
+
+  var x = document.getElementById("popup");
+  x.style.visibility = "visible";
+  var text =  document.getElementById("text"+id).innerHTML;
+  document.getElementById("popuptext").innerHTML += text;
+  document.getElementById("popuptopic").value += val;
+  document.getElementById("highlightid").value = id;
+
+}
+
+function hidePopup() {
+  var x = document.getElementById("popup");
+  if (x.style.display === "block") {
+      x.style.display = "none";
+  }
+}*/
+
+/*saves the position in the entry table/topic table and keeps it */
+ $(document).ready(function() {
+   if (localStorage.getItem("scroll") != null) {
+     $(".entry-scroll").scrollTop(localStorage.getItem("scroll"));
+   }
+
+   $(".entry-scroll").on("scroll", function() {
+    localStorage.setItem("scroll", $(".entry-scroll").scrollTop());
+  });
+
+
+ });
+
+
+
+
+
+</script>
+</body>
+</html>
